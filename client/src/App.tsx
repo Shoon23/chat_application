@@ -1,15 +1,15 @@
 import React from "react";
 import Rightbar from "./components/Rightbar";
-import Chatbox from "./components/Chatbox";
-import Chats from "./components/Chats";
+import MessageArea from "./components/MessageArea";
+import Inbox from "./components/Inbox";
 
 type Props = {};
 
 const App: React.FC<Props> = ({}) => {
   return (
     <div className="w-screen h-screen flex overflow-hidden">
-      <Chats />
-      <Chatbox />
+      <Inbox />
+      <MessageArea />
       <Rightbar />
     </div>
   );
