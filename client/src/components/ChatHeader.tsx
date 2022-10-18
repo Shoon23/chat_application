@@ -10,7 +10,7 @@ const ChatHeader: React.FC<Props> = ({}) => {
         <div className="w-14 h-14 rounded-full ring ring-accent ring-offset-base-100 ring-offset-2">
           <img src="https://placeimg.com/192/192/people" />
         </div>
-        <p>Sean Wilfred T. Custodio</p>
+        <p className="font-bold">Sean Wilfred T. Custodio</p>
       </div>
       <div className="flex mr-5 place-items-center gap-2">
         <PhoneIcon className="w-6 h-6" />
