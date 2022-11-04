@@ -1,17 +1,16 @@
 import React from "react";
-import Rightbar from "./components/Rightbar";
-import MessageArea from "./components/MessageArea";
-import Inbox from "./components/Inbox";
+import Home from "./pages/Home";
+import AuthPage from "./pages/AuthPage";
+import { Route, Routes } from "react-router-dom";
 
 type Props = {};
 
 const App: React.FC<Props> = ({}) => {
   return (
-    <div className="w-screen h-screen flex overflow-hidden">
-      <Inbox />
-      <MessageArea />
-      <Rightbar />
-    </div>
+    <Routes>
+      <Route path="/home" element={<Home />} />
+      <Route path="/auth" element={<AuthPage />} />
+    </Routes>
   );
 };
 

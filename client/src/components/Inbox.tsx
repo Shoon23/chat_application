@@ -16,7 +16,7 @@ const Chats: React.FC<Props> = ({}) => {
       </div>
 
       <div className="h-screen overflow-auto">
-        <div className="flex flex-col last:mb-6">
+        <div className="flex flex-col last:mb-3">
           <Avatar />
           <Avatar />
           <Avatar />

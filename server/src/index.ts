@@ -11,12 +11,19 @@ const httpServer = createServer(app);
 const port = 5000;
 const io = new Server(httpServer, {
   cors: {
-    origin: "http://127.0.0.1:5173",
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
-
 app.use(cors);
+
+io.on("connection", (socket) => {
+  console.log(socket.id);
+  socket.on("send_message", (data) => {
+    console.log(data);
+    socket.broadcast.emit("receive_message", data);
+  });
+});
 
 httpServer.listen(port, () => {
   console.log("server connect");
