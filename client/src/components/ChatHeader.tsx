@@ -13,8 +13,8 @@ const ChatHeader: React.FC<Props> = ({}) => {
         <p className="font-bold">Sean Wilfred T. Custodio</p>
       </div>
       <div className="flex mr-5 place-items-center gap-2">
-        <PhoneIcon className="w-6 h-6" />
-        <VideoCameraIcon className="w-6 h-6" />
+        <PhoneIcon className="w-8 h-8 p-1 rounded-lg hover:bg-gray-700" />
+        <VideoCameraIcon className="w-8 h-8 p-1 rounded-lg hover:bg-gray-700" />
       </div>
     </div>
   );

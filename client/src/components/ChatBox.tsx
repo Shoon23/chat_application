@@ -15,11 +15,11 @@ const Chatbox: React.FC<Props> = ({ handleSend, m, setM }) => {
   return (
     <form
       onSubmit={handleSend}
-      className="p-2 h-max flex justify-center border border-slate-700 gap-2"
+      className="p-2 h-max flex justify-center border border-slate-700 gap-2 "
     >
       <div className="self-center flex gap-1">
-        <PhotoIcon className="w-7 h-7" />
-        <FaceSmileIcon className="w-7 h-7" />
+        <PhotoIcon className="w-10 h-10 p-1 rounded-lg hover:bg-gray-700" />
+        <FaceSmileIcon className="w-10 h-10 p-1 rounded-lg hover:bg-gray-700" />
       </div>
       <input
         type="text"
@@ -28,8 +28,8 @@ const Chatbox: React.FC<Props> = ({ handleSend, m, setM }) => {
         onChange={(e) => setM(e.target.value)}
         value={m}
       />
-      <button type="submit">
-        <PaperAirplaneIcon className="self-center w-7 h-7" />
+      <button type="submit" className="self-center">
+        <PaperAirplaneIcon className=" w-10 h-10 p-1 rounded-lg hover:bg-gray-700" />
       </button>
     </form>
   );
