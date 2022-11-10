@@ -11,6 +11,16 @@ const Register: React.FC<Props> = ({}) => {
           <p className="text-center text-2xl m-2">Create Account</p>
           <form className="flex flex-col gap-5">
             <input
+              type="text"
+              placeholder="First name"
+              className="input input-bordered input-accent w-full max-w-xs"
+            />
+            <input
+              type="text"
+              placeholder="Last name"
+              className="input input-bordered input-accent w-full max-w-xs"
+            />
+            <input
               type="email"
               placeholder="Email"
               className="input input-bordered input-accent w-full max-w-xs"

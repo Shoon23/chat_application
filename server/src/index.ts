@@ -12,6 +12,7 @@ const app: Express = express();
 const httpServer = createServer(app);
 const port = 3000;
 
+app.use(express.json());
 // app.use(cors);
 
 // const io = new Server(httpServer, {
