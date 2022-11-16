@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import { db } from "../config/ConnectDB";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 export const register_controller = (req: Request, res: Response) => {
   const first_name = req.body.first_name;
@@ -8,11 +9,11 @@ export const register_controller = (req: Request, res: Response) => {
   const email = req.body.email;
   const password = req.body.password;
   const date_now = new Date();
-  // check if user exist
+
   const sql_check = "SELECT * FROM user WHERE email = ?";
 
   db.query(sql_check, [email], async (err, data) => {
-    if (err) return res.status(409).json(err);
+    if (err) return res.status(500).json(err);
     if (data.length)
       return res.status(409).json({ error: "user already exist" });
 
@@ -33,7 +34,7 @@ export const register_controller = (req: Request, res: Response) => {
 
 export const login_controller = async (req: Request, res: Response) => {
   const email = req.body.email;
-  const password = req.body.password;
+  const password_ = req.body.password;
 
   const sql_check = "SELECT * FROM user WHERE email = ?";
 
@@ -41,10 +42,19 @@ export const login_controller = async (req: Request, res: Response) => {
     if (err) return res.status(500).json(err);
     if (!data.length) res.status(404).json({ msg: "user dont exist" });
 
-    const check_password = await bcrypt.compare(password, data[0].password);
+    const check_password = await bcrypt.compare(password_, data[0].password);
 
     if (!check_password) return res.status(404).json({ err: "wrong password" });
 
-    return res.status(200).json(data);
+    const access_token = jwt.sign({ id: data[0].id }, "public_key");
+    const refresh_token = jwt.sign({ id: data[0].id }, "private_key");
+
+    const { password, ...others } = data[0];
+
+    res
+      .cookie("access_token", access_token, { httpOnly: true })
+      .cookie("refresh_token", refresh_token, { httpOnly: true })
+      .status(200)
+      .json(others);
   });
 };

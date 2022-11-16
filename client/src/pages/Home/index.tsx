@@ -1,8 +1,7 @@
 import React from "react";
-import Inbox from "../components/Inbox";
-import MessageArea from "../components/MessageArea";
-import Rightbar from "../components/Rightbar";
-
+import Inbox from "./components/Inbox";
+import MessageArea from "./components/MessageArea";
+import Rightbar from "./components/Rightbar";
 type Props = {};
 
 const Home: React.FC<Props> = ({}) => {

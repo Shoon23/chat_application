@@ -1,19 +1,8 @@
 import React from "react";
-import Home from "./pages/Home";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import { Route, Routes } from "react-router-dom";
+import RoutesManager from "./setup/RoutesManager";
 
-type Props = {};
-
-const App: React.FC<Props> = ({}) => {
-  return (
-    <Routes>
-      <Route path="/home" element={<Home />} />
-      <Route path="/auth/login" element={<Login />} />
-      <Route path="/auth/register" element={<Register />} />
-    </Routes>
-  );
+const App: React.FC = () => {
+  return <RoutesManager />;
 };
 
 export default App;

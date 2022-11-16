@@ -1,32 +1,32 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
 import ChatHeader from "./ChatHeader";
 import ReceiveBox from "./ReceiveBox";
-import SendBox from "./SendBox";
+import SendBox from "./SenderBox";
 import ChatBox from "./ChatBox";
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
-const socket = io("http://localhost:5000");
+// const socket = io("http://localhost:5000");
 
 type Props = {};
 
 const Chatbox: React.FC<Props> = ({}) => {
   useEffect(() => {
-    socket.on("receive_message", (data) => {
-      setMes((prev) => [...prev, data]);
-    });
+    // socket.on("receive_message", (data) => {
+    //   setMes((prev) => [...prev, data]);
+    // });
     console.log(mess);
     bottomRef.current?.scrollIntoView({});
-  }, [socket]);
+  }, []);
 
   const [mess, setMes] = useState<{ message: string }[]>([]);
   const [m, setM] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const handleSend = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    await socket.emit("send_message", { message: m });
-    console.log(m);
-    setM("");
+    // e.preventDefault();
+    // await socket.emit("send_message", { message: m });
+    // console.log(m);
+    // setM("");
   };
 
   return (
