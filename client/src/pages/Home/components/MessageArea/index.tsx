@@ -14,7 +14,7 @@ const Chatbox: React.FC<Props> = ({}) => {
     // socket.on("receive_message", (data) => {
     //   setMes((prev) => [...prev, data]);
     // });
-    console.log(mess);
+    // console.log(mess);
     bottomRef.current?.scrollIntoView({});
   }, []);
 
