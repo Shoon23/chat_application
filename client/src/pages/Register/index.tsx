@@ -84,7 +84,13 @@ const Register: React.FC = () => {
                 },
               })}
             />
-            <p className="text-red-500">{errors.confirm_password?.message}</p>
+            {mutation.error?.response?.data ? (
+              <p className="text-red-500">
+                {mutation.error?.response?.data.err}
+              </p>
+            ) : (
+              <p className="text-red-500">{errors.confirm_password?.message}</p>
+            )}
 
             <button className="btn btn-accent w-full max-w-xs">Register</button>
             <Link to="/auth/login" className="self-center text-slate-400">

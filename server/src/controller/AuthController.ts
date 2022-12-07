@@ -14,8 +14,7 @@ export const register_controller = (req: Request, res: Response) => {
 
   db.query(sql_check, [email], async (err, data) => {
     if (err) return res.status(500).json(err);
-    if (data.length)
-      return res.status(409).json({ error: "user already exist" });
+    if (data.length) return res.status(409).json({ err: "user already exist" });
 
     const salt = await bcrypt.genSalt(10);
     const hash_password = await bcrypt.hash(password, salt);

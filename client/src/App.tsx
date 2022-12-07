@@ -15,7 +15,7 @@ const App: React.FC = () => {
       <QueryClientProvider client={queryClient}>
         <Routes>
           <Route element={<PrivateRoutes />}>
-            <Route path="/home" element={<Home />} />
+            <Route path="/" element={<Home />} />
           </Route>
           <Route path="/auth/login" element={<Login />} />
           <Route path="/auth/register" element={<Register />} />

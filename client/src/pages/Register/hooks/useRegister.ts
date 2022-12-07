@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
+import { iErrorMsg } from "../../Login/interfaces/iErrorMsg";
 import { iPostData } from "../interfaces/iPostData";
 import { iUserDetails } from "../interfaces/iUserDetails";
 
@@ -20,8 +21,7 @@ export const useRegister = () => {
         }
       );
     },
-    onError(error: AxiosError) {
-      console.log(error);
+    onError(error: AxiosError<iErrorMsg>) {
       return error;
     },
     onSuccess(data: AxiosResponse) {

@@ -1,5 +1,5 @@
 import React from "react";
-import Inbox from "./components/Inbox";
+import Leftbar from "./components/Leftbar";
 import MessageArea from "./components/MessageArea";
 import Rightbar from "./components/Rightbar";
 type Props = {};
@@ -7,7 +7,7 @@ type Props = {};
 const Home: React.FC<Props> = ({}) => {
   return (
     <div className="w-screen h-screen flex overflow-hidden">
-      <Inbox />
+      <Leftbar />
       <MessageArea />
       <Rightbar />
     </div>
