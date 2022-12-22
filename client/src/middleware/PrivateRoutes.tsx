@@ -1,12 +1,19 @@
 import React from "react";
-import { Outlet, Navigate } from "react-router-dom";
+import { Outlet, Navigate, useLocation } from "react-router-dom";
+import { cqueryClient } from "../App";
+import { iUser } from "./interface/iUser";
 
 type Props = {};
 
 const PrivateRoutes: React.FC<Props> = ({}) => {
-  const isAuth = true;
+  const location = useLocation();
+  const data = cqueryClient.getQueryData<iUser>(["user"]);
 
-  return isAuth ? <Outlet /> : <Navigate to={"/login"} />;
+  return data?.access_token ? (
+    <Outlet />
+  ) : (
+    <Navigate to={"/auth/login"} state={{ from: location }} replace />
+  );
 };
 
 export default PrivateRoutes;

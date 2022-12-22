@@ -36,3 +36,15 @@ export const find_user = (req: Request, res: Response) => {
     res.status(200).json(data);
   });
 };
+
+export const inbox_controller = (req: Request, res: Response) => {
+  let user_id = req.body.user_id;
+
+  const get_all = "SELECT * FROM inbox WHERE inbox.user_id = ?";
+
+  db.query(get_all, [user_id], (err, data) => {
+    if (err) return res.status(500).json(err);
+    if (!data.length) return res.status(404).json({ err: "no chat rooms" });
+    res.status(200).json(data);
+  });
+};

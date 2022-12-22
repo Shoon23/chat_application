@@ -1,8 +1,16 @@
 import React from "react";
 
-type Props = {};
+type Props = {
+  data: {
+    id: number;
+    contact_name: string;
+    last_message: string;
+    is_seen: boolean;
+    status: boolean;
+  };
+};
 
-const Avatar: React.FC<Props> = ({}) => {
+const Avatar: React.FC<Props> = ({ data }) => {
   return (
     <div className="flex flex-row gap-2 m-2 w-11/12 hover:bg-gray-700 h-20 items-center rounded-3xl">
       <div className="avatar online">
@@ -12,8 +20,8 @@ const Avatar: React.FC<Props> = ({}) => {
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col gap-1">
-          <p className="font-semibold">Sean Wilfred T. Custodio</p>
-          <p className="font-light text-sm">Good morning </p>
+          <p className="font-semibold">{data.contact_name}</p>
+          <p className="font-light text-sm">{data.last_message} </p>
         </div>
         <span className="indicator-item badge badge-accent self-center m-3"></span>
       </div>

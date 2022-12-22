@@ -18,9 +18,13 @@ const index: React.FC<Props> = ({ isLoading, data }) => {
   return (
     <div className="h-screen overflow-auto">
       <div className="flex flex-col last:mb-3">
-        {data?.map((data) => {
-          return <SearchResult key={data.user_id} data={data} />;
-        })}
+        {data ? (
+          data?.map((data) => {
+            return <SearchResult key={data.user_id} data={data} />;
+          })
+        ) : (
+          <p>not found</p>
+        )}
       </div>
     </div>
   );
