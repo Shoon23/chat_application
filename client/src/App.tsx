@@ -14,6 +14,7 @@ import {
   check_token,
   onRequestError,
 } from "./services/custom-axios-fetch";
+import CheckAccess from "./middleware/CheckAccess";
 
 export const cqueryClient = new QueryClient();
 
@@ -33,9 +34,12 @@ const App: React.FC = () => {
               <Route path="/" element={<Home />} />
             </Route>
           </Route>
-          <Route path="/auth/login" element={<Login />} />
-          <Route path="/auth/register" element={<Register />} />
+          <Route element={<CheckAccess />}>
+            <Route path="/auth/login" element={<Login />} />
+            <Route path="/auth/register" element={<Register />} />
+          </Route>
         </Routes>
+
         <ReactQueryDevtools initialIsOpen={false} />
       </QueryClientProvider>
     </>

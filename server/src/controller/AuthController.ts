@@ -91,6 +91,7 @@ export const refresh_controller = async (req: Request, res: Response) => {
   }
   jwt.verify(refresh_token, "public_key", (err: any, decoded: any) => {
     if (err) {
+      res.clearCookie("refresh_token");
       return res.status(403).json({ ...err, from: "refresh-token" });
     }
     const sql_check = "SELECT * FROM user WHERE user_id = ?";

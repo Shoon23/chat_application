@@ -7,11 +7,15 @@ import {
 
 type Props = {
   handleSend: FormEventHandler<HTMLFormElement>;
-  m: string;
-  setM: React.Dispatch<React.SetStateAction<string>>;
+  newMessage: string;
+  setNewMessage: React.Dispatch<React.SetStateAction<string>>;
 };
 
-const Chatbox: React.FC<Props> = ({ handleSend, m, setM }) => {
+const Chatbox: React.FC<Props> = ({
+  handleSend,
+  newMessage,
+  setNewMessage,
+}) => {
   return (
     <form
       onSubmit={handleSend}
@@ -25,8 +29,8 @@ const Chatbox: React.FC<Props> = ({ handleSend, m, setM }) => {
         type="text"
         placeholder="Aa..."
         className="input input-bordered w-3/4"
-        onChange={(e) => setM(e.target.value)}
-        value={m}
+        onChange={(e) => setNewMessage(e.target.value)}
+        value={newMessage}
       />
       <button type="submit" className="self-center">
         <PaperAirplaneIcon className=" w-10 h-10 p-1 rounded-lg hover:bg-gray-700" />

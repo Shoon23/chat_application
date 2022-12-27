@@ -1,18 +1,38 @@
 import React, { useState } from "react";
-import InboxList from "./components/InboxList";
+import InboxList, { iData } from "./components/InboxList";
 import SearcList from "./components/SearchList";
 import { iSearch } from "./interface/iSearch";
 import { useSearch } from "./hooks/useSearch";
 import { ArrowLongRightIcon } from "@heroicons/react/24/solid";
 import { useInbox } from "./hooks/useInbox";
+import { UseMutationResult, UseMutateFunction } from "@tanstack/react-query";
+import { AxiosError, AxiosResponse } from "axios";
 
-type Props = {};
+type Props = {
+  mutation: UseMutationResult<
+    AxiosResponse<any, any>,
+    AxiosError<unknown, any>,
+    iSearch,
+    unknown
+  >;
+  isLoading: boolean;
+  data: AxiosResponse<any, any> | undefined;
+  setCurrentRoom: React.Dispatch<React.SetStateAction<iData | undefined>>;
+  mutate: UseMutateFunction<
+    AxiosResponse<any, any>,
+    unknown,
+    string | undefined,
+    unknown
+  >;
+};
 
-const Chats: React.FC<Props> = ({}) => {
-  const mutation = useSearch();
-
-  const { isLoading, data } = useInbox();
-
+const Chats: React.FC<Props> = ({
+  mutation,
+  isLoading,
+  data,
+  setCurrentRoom,
+  mutate,
+}) => {
   const [search_item, set_search_item] = useState<iSearch>({
     search_item: "",
   });
@@ -48,9 +68,20 @@ const Chats: React.FC<Props> = ({}) => {
         />
       </div>
       {is_display ? (
-        <SearcList isLoading={mutation.isLoading} data={mutation.data?.data} />
+        <SearcList
+          isLoading={mutation.isLoading}
+          data={mutation.data?.data}
+          set_is_display={set_is_display}
+          setCurrentRoom={setCurrentRoom}
+          mutate={mutate}
+        />
       ) : data?.data ? (
-        <InboxList data={data?.data} isLoading={isLoading} />
+        <InboxList
+          data={data?.data}
+          isLoading={isLoading}
+          setCurrentRoom={setCurrentRoom}
+          mutate={mutate}
+        />
       ) : (
         <div>Empty inbox</div>
       )}

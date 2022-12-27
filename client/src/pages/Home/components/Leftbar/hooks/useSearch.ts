@@ -21,10 +21,6 @@ export const useSearch = () => {
         },
       });
     },
-    onError(error: AxiosError, variables, context) {
-      // if (error.response?.status == 403) {
-      //   navigate("/auth/login");
-      // }
-    },
+    onError(error: AxiosError, variables, context) {},
   });
 };

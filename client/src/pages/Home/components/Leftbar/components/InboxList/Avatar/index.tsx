@@ -8,11 +8,15 @@ type Props = {
     is_seen: boolean;
     status: boolean;
   };
+  handleClick: () => void;
 };
 
-const Avatar: React.FC<Props> = ({ data }) => {
+const Avatar: React.FC<Props> = ({ data, handleClick }) => {
   return (
-    <div className="flex flex-row gap-2 m-2 w-11/12 hover:bg-gray-700 h-20 items-center rounded-3xl">
+    <div
+      onClick={handleClick}
+      className="flex flex-row gap-2 m-2 w-11/12 hover:bg-gray-700 h-20 items-center rounded-3xl"
+    >
       <div className="avatar online">
         <div className="w-14 h-14 rounded-full m-2">
           <img src="https://placeimg.com/192/192/people" />

@@ -5,7 +5,7 @@ import { cqueryClient } from "../../../../../App";
 import { iUser } from "../../../../../middleware/interface/iUser";
 import { useNavigate } from "react-router-dom";
 
-export const useInbox = () => {
+export const useInbox = (user_id: any) => {
   const navigate = useNavigate();
 
   const data = cqueryClient.getQueryData<iUser>(["user"]);
@@ -16,7 +16,7 @@ export const useInbox = () => {
       return await fetch_instance.post(
         "chat-room/inbox",
         {
-          user_id: 7,
+          user_id,
         },
         {
           headers: {

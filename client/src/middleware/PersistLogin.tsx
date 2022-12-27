@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { cqueryClient } from "../App";
 import { useQuery } from "@tanstack/react-query";
@@ -19,7 +19,7 @@ const PersistLogin: React.FC<Props> = ({}) => {
   if (isError) {
     navigate("/auth/login");
   }
-  return isLoading ? <div className="">Loading....</div> : <Outlet />;
+  return isLoading ? <div className="">loading.....</div> : <Outlet />;
 };
 
 export default PersistLogin;
