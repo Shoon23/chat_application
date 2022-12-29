@@ -1,69 +1,47 @@
 import React, { FormEvent, useEffect, useRef, useState } from "react";
-import ChatHeader from "./ChatHeader";
-import ReceiveBox from "./ReceiveBox";
-import SendBox from "./SenderBox";
-import ChatBox from "./ChatBox";
-import { iRoom } from "../../interface/iRoom";
-import { cqueryClient } from "../../../../App";
-import { useMutation } from "@tanstack/react-query";
-import { fetch_instance } from "../../../../services/custom-axios-fetch";
-import { iUser } from "../../../../middleware/interface/iUser";
-import { AxiosResponse } from "axios";
-import Avatar from "../Leftbar/components/InboxList/Avatar";
-import { iData } from "../Leftbar/components/InboxList";
+import ChatHeader from "./components/ChatHeader";
+import ReceiveBox from "./components/ReceiveBox";
+import SendBox from "./components/SendBox";
+import ChatBox from "./components/ChatBox";
+import { iUser } from "../../../../common/model";
+import { iRoom } from "../../model";
+import { Socket } from "socket.io-client";
+import { iMessageList } from "./model";
+import message from "../../../../services/message";
+import { useQueryClient } from "@tanstack/react-query";
+import { usePrivateAxios } from "../../../../common/hooks/usePrivateAxios";
 
 type Props = {
-  data: AxiosResponse<any, any> | undefined;
-  currentRoom: iData | undefined;
+  currentRoom: iRoom | undefined;
+  socket: React.MutableRefObject<Socket | undefined>;
 };
 
-interface iMessage {
-  date_sent: string;
-  message_body: string;
-  message_id: number;
-  room_id: string;
-  sender_id: number;
-}
-
-interface iNewMessage {
-  room_id: string | undefined;
-  sender_id: number | undefined;
-  message_body: string | undefined;
-}
-
-const Chatbox: React.FC<Props> = ({ data, currentRoom }) => {
-  const user = cqueryClient.getQueryData<iUser>(["user"]);
-  const messages = cqueryClient.getQueryData<Array<iMessage>>(["message_list"]);
-
-  useEffect(() => {
-    bottomRef.current?.scrollIntoView({});
-  }, [messages]);
-
+const MessageArea: React.FC<Props> = ({ currentRoom, socket }) => {
+  const queryClient = useQueryClient();
+  const api = usePrivateAxios(queryClient);
+  const user = queryClient.getQueryData<iUser>(["user"]);
+  const messages = queryClient.getQueryData<Array<iMessageList>>([
+    "message_list",
+  ]);
+  const { mutate } = message.sendMessage(queryClient, api);
   const [newMessage, setNewMessage] = useState<string>("");
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const { mutate } = useMutation({
-    mutationFn: async (newMessageData: iNewMessage) => {
-      try {
-        const res = await fetch_instance.post("message/send", newMessageData, {
-          headers: {
-            Authorization: `Bearer ${user?.access_token}`,
+  useEffect(() => {
+    socket.current?.on("getMessage", (data) => {
+      queryClient.setQueryData(["message_list"], (oldData: any) => {
+        return [
+          ...oldData,
+          {
+            sender_id: data.receiverId,
+            message_body: data.message,
+            date_sent: Date.now(),
           },
-        });
-        return res.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    onSuccess(data, variables, context) {
-      cqueryClient.setQueryData(["message_list"], (oldData: any) => {
-        return [...oldData, data];
+        ];
       });
-    },
-    onSettled: () => {
-      cqueryClient.invalidateQueries(["message_list"]);
-    },
-  });
+    });
+    bottomRef.current?.scrollIntoView({});
+  }, [messages]);
 
   const handleSend = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -73,6 +51,19 @@ const Chatbox: React.FC<Props> = ({ data, currentRoom }) => {
       message_body: newMessage,
     };
     mutate(message);
+    let receiverId;
+    if (currentRoom?.user_one !== user?.user_id) {
+      receiverId = currentRoom?.user_one;
+    } else {
+      receiverId = currentRoom?.user_two;
+    }
+
+    socket.current?.emit("sendMessage", {
+      senderId: user?.user_id,
+      receiverId,
+      message: newMessage,
+    });
+
     setNewMessage("");
   };
 
@@ -80,21 +71,18 @@ const Chatbox: React.FC<Props> = ({ data, currentRoom }) => {
     <div className="flex flex-col w-2/3 border-r border-slate-700">
       {currentRoom ? (
         <>
-          <ChatHeader name={currentRoom.contact_name} />
+          <ChatHeader />
           <div className="h-screen overflow-y-scroll">
             <div className="flex flex-col">
               {messages?.map((mess) => {
-                if (mess.sender_id == user?.user_id) {
+                if (mess.sender_id === user?.user_id) {
                   return (
-                    <SendBox
-                      key={mess.message_id}
-                      message={mess.message_body}
-                    />
+                    <SendBox key={mess.date_sent} message={mess.message_body} />
                   );
                 }
                 return (
                   <ReceiveBox
-                    key={mess.message_id}
+                    key={mess.date_sent}
                     message={mess.message_body}
                   />
                 );
@@ -109,10 +97,10 @@ const Chatbox: React.FC<Props> = ({ data, currentRoom }) => {
           />
         </>
       ) : (
-        <div className="">no rooms are open </div>
+        <div className="">Loading</div>
       )}
     </div>
   );
 };
 
-export default Chatbox;
+export default MessageArea;

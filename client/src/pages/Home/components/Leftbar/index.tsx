@@ -1,35 +1,34 @@
 import React, { useState } from "react";
-import InboxList, { iData } from "./components/InboxList";
-import SearcList from "./components/SearchList";
-import { iSearch } from "./interface/iSearch";
-import { useSearch } from "./hooks/useSearch";
+import InboxList from "./components/InboxList";
+import SearchList from "./components/SearchList";
+import { iSearch } from "./model";
 import { ArrowLongRightIcon } from "@heroicons/react/24/solid";
-import { useInbox } from "./hooks/useInbox";
 import { UseMutationResult, UseMutateFunction } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
+import { iRoom } from "../../model";
 
 type Props = {
-  mutation: UseMutationResult<
+  inboxLoading: boolean;
+  inbox_data: AxiosResponse<any, any> | undefined;
+  setCurrentRoom: React.Dispatch<React.SetStateAction<iRoom | undefined>>;
+  mutate: UseMutateFunction<
     AxiosResponse<any, any>,
+    unknown,
+    number | undefined,
+    unknown
+  >;
+  searchMutation: UseMutationResult<
+    any,
     AxiosError<unknown, any>,
     iSearch,
     unknown
   >;
-  isLoading: boolean;
-  data: AxiosResponse<any, any> | undefined;
-  setCurrentRoom: React.Dispatch<React.SetStateAction<iData | undefined>>;
-  mutate: UseMutateFunction<
-    AxiosResponse<any, any>,
-    unknown,
-    string | undefined,
-    unknown
-  >;
 };
 
-const Chats: React.FC<Props> = ({
-  mutation,
-  isLoading,
-  data,
+const Leftbar: React.FC<Props> = ({
+  searchMutation,
+  inboxLoading,
+  inbox_data,
   setCurrentRoom,
   mutate,
 }) => {
@@ -37,13 +36,11 @@ const Chats: React.FC<Props> = ({
     search_item: "",
   });
   const [is_display, set_is_display] = useState<boolean>(false);
-
   const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     set_is_display(true);
-
     if (search_item.search_item === "") return;
     if (e.key === "Enter") {
-      mutation.mutate(search_item);
+      searchMutation.mutate(search_item);
     }
   };
 
@@ -68,17 +65,17 @@ const Chats: React.FC<Props> = ({
         />
       </div>
       {is_display ? (
-        <SearcList
-          isLoading={mutation.isLoading}
-          data={mutation.data?.data}
-          set_is_display={set_is_display}
+        <SearchList
+          isLoading={searchMutation.isLoading}
           setCurrentRoom={setCurrentRoom}
           mutate={mutate}
+          set_is_display={set_is_display}
+          search_list={searchMutation?.data}
         />
-      ) : data?.data ? (
+      ) : inbox_data?.data ? (
         <InboxList
-          data={data?.data}
-          isLoading={isLoading}
+          inbox_data={inbox_data?.data}
+          inboxLoading={inboxLoading}
           setCurrentRoom={setCurrentRoom}
           mutate={mutate}
         />
@@ -89,4 +86,4 @@ const Chats: React.FC<Props> = ({
   );
 };
 
-export default Chats;
+export default Leftbar;

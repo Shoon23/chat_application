@@ -26,7 +26,7 @@ app.use(
 
 app.use("/auth", auth_routes);
 
-// app.use(verifyToken);
+app.use(verifyToken);
 app.use("/message", message_routes);
 app.use("/chat-room", room_routes);
 

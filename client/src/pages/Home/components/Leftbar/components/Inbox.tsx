@@ -2,11 +2,7 @@ import React from "react";
 
 type Props = {
   data: {
-    id: number;
-    contact_name: string;
-    last_message: string;
-    is_seen: boolean;
-    status: boolean;
+    room_id: number;
   };
   handleClick: () => void;
 };
@@ -24,8 +20,8 @@ const Avatar: React.FC<Props> = ({ data, handleClick }) => {
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col gap-1">
-          <p className="font-semibold">{data.contact_name}</p>
-          <p className="font-light text-sm">{data.last_message} </p>
+          <p className="font-semibold">{}</p>
+          <p className="font-light text-sm">{} </p>
         </div>
         <span className="indicator-item badge badge-accent self-center m-3"></span>
       </div>

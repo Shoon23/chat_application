@@ -6,3 +6,7 @@ export interface iUser {
   first_name: string;
   last_name: string;
 }
+
+export interface iError {
+  err: string;
+}

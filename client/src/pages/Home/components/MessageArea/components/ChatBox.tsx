@@ -1,4 +1,4 @@
-import React, { FormEventHandler, SetStateAction } from "react";
+import React, { FormEventHandler } from "react";
 import {
   PaperAirplaneIcon,
   FaceSmileIcon,

@@ -1,12 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { iRegisterForm } from "./interfaces/iRegisterForm";
+import { iRegisterForm } from "./model";
 import { useForm } from "react-hook-form";
-import { useRegister } from "./hooks/useRegister";
-import { useNavigate } from "react-router-dom";
+import authentication from "../../services/authentication";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Register: React.FC = () => {
-  const mutation = useRegister();
+  const queryClient = useQueryClient();
+  const mutation = authentication.register(queryClient);
 
   const {
     register,

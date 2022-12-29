@@ -1,14 +1,14 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import { cqueryClient } from "../App";
+import { queryClient } from "../main";
 import { useQuery } from "@tanstack/react-query";
-import { iUser } from "./interface/iUser";
-import { useRefreshToken } from "./hooks/useRefreshToken";
+import { iUser } from "../common/model";
+import { useRefreshToken } from "../common/hooks/useRefreshToken";
 
 type Props = {};
 
 const PersistLogin: React.FC<Props> = ({}) => {
-  const data = cqueryClient.getQueryData<iUser>(["user"]);
+  const data = queryClient.getQueryData<iUser>(["user"]);
   const isExist = data?.access_token !== "";
 
   const navigate = useNavigate();

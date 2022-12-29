@@ -1,30 +1,30 @@
 import { AxiosResponse } from "axios";
 import React from "react";
-import { iData } from "../InboxList";
-import SearchResult from "./components/SearchResult";
+import { iRoom } from "../../../model";
+import SearchResult from "./SearchResult";
 import { UseMutateFunction } from "@tanstack/react-query";
 
 type Props = {
   isLoading: boolean;
-  data: Array<{
+  search_list: Array<{
     user_id: number;
     first_name: string;
     last_name: string;
     email: string;
   }>;
   set_is_display: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentRoom: React.Dispatch<React.SetStateAction<iData | undefined>>;
+  setCurrentRoom: React.Dispatch<React.SetStateAction<iRoom | undefined>>;
   mutate: UseMutateFunction<
     AxiosResponse<any, any>,
     unknown,
-    string | undefined,
+    number | undefined,
     unknown
   >;
 };
 
-const index: React.FC<Props> = ({
+const SearchList: React.FC<Props> = ({
   isLoading,
-  data,
+  search_list,
   set_is_display,
   setCurrentRoom,
   mutate,
@@ -35,12 +35,12 @@ const index: React.FC<Props> = ({
   return (
     <div className="h-screen overflow-auto">
       <div className="flex flex-col last:mb-3">
-        {data ? (
-          data?.map((data) => {
+        {search_list ? (
+          search_list?.map((search_data) => {
             return (
               <SearchResult
-                key={data.user_id}
-                data={data}
+                key={search_data.user_id}
+                data={search_data}
                 set_is_display={set_is_display}
                 setCurrentRoom={setCurrentRoom}
                 mutate={mutate}
@@ -55,4 +55,4 @@ const index: React.FC<Props> = ({
   );
 };
 
-export default index;
+export default SearchList;

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { iLoginForm } from "./interfaces/iLoginForm";
-import { useLogin } from "./hooks/useLogin";
-import { cqueryClient } from "../../App";
+import { iLoginForm } from "./model";
+import authentication from "../../services/authentication";
+import { useQueryClient } from "@tanstack/react-query";
 
 const Login: React.FC = () => {
-  const mutation = useLogin();
+  const queryClient = useQueryClient();
+
+  const mutation = authentication.login(queryClient);
 
   const onLogin = (data: iLoginForm) => {
     mutation.mutateAsync(data);
