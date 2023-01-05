@@ -1,8 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { QueryClient } from "@tanstack/react-query";
 import { AxiosInstance } from "axios";
-import { usePrivateMutation } from "../common/hooks/usePrivateMutation";
-import { iUser } from "../common/model";
 import { iNewMessage } from "../pages/Home/components/MessageArea/model";
 
 export default {

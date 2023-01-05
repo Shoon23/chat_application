@@ -1,11 +1,11 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMutation, useQuery, QueryClient } from "@tanstack/react-query";
+import { useMutation, QueryClient } from "@tanstack/react-query";
 import authAxios from "../lib/custom-axios/authAxios";
 import { AxiosError, AxiosResponse } from "axios";
 import { iLoginForm } from "../pages/Login/model";
 import { iPostData } from "../pages/Register/model";
 import { iError } from "../common/model";
-import { queryClient } from "../main";
+
 export default {
   login: (queryClient: QueryClient) => {
     const navigate = useNavigate();
@@ -54,7 +54,6 @@ export default {
         return await authAxios.get("/auth/logout");
       },
       onSuccess(data, variables, context) {
-        console.log(data.data);
         queryClient.clear();
         navigate("auth/login");
       },

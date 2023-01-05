@@ -4,7 +4,6 @@ import ReceiveBox from "./components/ReceiveBox";
 import SendBox from "./components/SendBox";
 import ChatBox from "./components/ChatBox";
 import { iUser } from "../../../../common/model";
-import { iRoom } from "../../model";
 import { Socket } from "socket.io-client";
 import { iMessageList } from "./model";
 import message from "../../../../services/message";

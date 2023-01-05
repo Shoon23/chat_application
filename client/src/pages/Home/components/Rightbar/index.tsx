@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { iUser } from "../../../../common/model";
 import Profile from "./components/Profile";
 import { ArrowLeftOnRectangleIcon } from "@heroicons/react/24/solid";
 import OnlineList from "./components/OnlineList";
 import authentication from "../../../../services/authentication";
-import { usePrivateAxios } from "../../../../common/hooks/usePrivateAxios";
 import { Socket } from "socket.io-client";
 import { iOnlineUser } from "./model";
-import { iRoom } from "../../model";
 
 type Props = {
   user: iUser | undefined;

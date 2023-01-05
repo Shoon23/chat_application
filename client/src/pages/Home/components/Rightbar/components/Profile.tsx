@@ -1,5 +1,4 @@
 import React from "react";
-import { CameraIcon } from "@heroicons/react/24/solid";
 import { iUser } from "../../../../../common/model";
 type Props = {
   user: iUser | undefined;
@@ -11,7 +10,6 @@ const Profile: React.FC<Props> = ({ user }) => {
       <div className="avatar content-center">
         <div className="w-24 rounded-full">
           <img src="https://placeimg.com/192/192/people" />
-          {/* <CameraIcon className="w-4 h-4 self-end" /> */}
         </div>
       </div>
       <div className="text-2xl pb-2 font-bold text-white">{`${user?.first_name} ${user?.last_name}`}</div>

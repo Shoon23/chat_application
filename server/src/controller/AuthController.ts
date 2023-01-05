@@ -113,7 +113,6 @@ export const refresh_controller = async (req: Request, res: Response) => {
 };
 
 export const logout_controller = (req: Request, res: Response) => {
-  console.log("yeah");
   res.clearCookie("refresh_token");
   res.status(200).send("cookie cleared");
 };

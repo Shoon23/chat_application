@@ -1,8 +1,5 @@
-import { AxiosResponse } from "axios";
 import React from "react";
-import { iRoom } from "../../../model";
 import SearchResult from "./SearchResult";
-import { UseMutateFunction } from "@tanstack/react-query";
 
 type Props = {
   isLoading: boolean;

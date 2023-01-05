@@ -1,12 +1,10 @@
 import React from "react";
 import { useRoomContext } from "../../../../../common/hooks/useRoomContext";
-import { UseMutateFunction } from "@tanstack/react-query";
 import { usePrivateAxios } from "../../../../../common/hooks/usePrivateAxios";
 import { iUser } from "../../../../../common/model";
-import { AxiosResponse } from "axios";
 import { useQueryClient } from "@tanstack/react-query";
 import chatRoom from "../../../../../services/chatRoom";
-import { iRoom } from "../../../model";
+
 type Props = {
   data: {
     user_id: number;

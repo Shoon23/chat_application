@@ -1,6 +1,5 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useState } from "react";
 import Inbox from "./Inbox";
-import { AxiosResponse } from "axios";
 import {
   useQueryClient,
   RefetchOptions,
