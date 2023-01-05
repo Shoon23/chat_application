@@ -6,5 +6,5 @@ import {
 const router = express.Router();
 
 router.post("/send", send_controller);
-router.post("/get-all", get_all_message);
+router.get("/get-all/:conversation_id", get_all_message);
 export default router;

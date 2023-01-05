@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import InboxList from "./components/InboxList";
 import SearchList from "./components/SearchList";
 import { iSearch } from "./model";
@@ -6,35 +6,38 @@ import { ArrowLongRightIcon } from "@heroicons/react/24/solid";
 import { UseMutationResult, UseMutateFunction } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
 import { iRoom } from "../../model";
+import {
+  useQueryClient,
+  RefetchOptions,
+  RefetchQueryFilters,
+  QueryObserverResult,
+} from "@tanstack/react-query";
+import { iUser } from "../../../../common/model";
 
 type Props = {
   inboxLoading: boolean;
-  inbox_data: AxiosResponse<any, any> | undefined;
-  setCurrentRoom: React.Dispatch<React.SetStateAction<iRoom | undefined>>;
-  mutate: UseMutateFunction<
-    AxiosResponse<any, any>,
-    unknown,
-    number | undefined,
-    unknown
-  >;
+  inbox_data: Array<iRoom> | undefined;
   searchMutation: UseMutationResult<
     any,
     AxiosError<unknown, any>,
     iSearch,
     unknown
   >;
+  refetch: <TPageData>(
+    options?: (RefetchOptions & RefetchQueryFilters<TPageData>) | undefined
+  ) => Promise<QueryObserverResult<any, unknown>>;
 };
 
 const Leftbar: React.FC<Props> = ({
   searchMutation,
   inboxLoading,
   inbox_data,
-  setCurrentRoom,
-  mutate,
+  refetch,
 }) => {
   const [search_item, set_search_item] = useState<iSearch>({
     search_item: "",
   });
+
   const [is_display, set_is_display] = useState<boolean>(false);
   const onSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     set_is_display(true);
@@ -67,17 +70,14 @@ const Leftbar: React.FC<Props> = ({
       {is_display ? (
         <SearchList
           isLoading={searchMutation.isLoading}
-          setCurrentRoom={setCurrentRoom}
-          mutate={mutate}
           set_is_display={set_is_display}
           search_list={searchMutation?.data}
         />
-      ) : inbox_data?.data ? (
+      ) : inbox_data ? (
         <InboxList
-          inbox_data={inbox_data?.data}
+          inbox_data={inbox_data}
           inboxLoading={inboxLoading}
-          setCurrentRoom={setCurrentRoom}
-          mutate={mutate}
+          refetch={refetch}
         />
       ) : (
         <div>Empty inbox</div>

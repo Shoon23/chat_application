@@ -1,5 +1,5 @@
 import React from "react";
-
+import { useRoomContext } from "../../../../../common/hooks/useRoomContext";
 import { UseMutateFunction } from "@tanstack/react-query";
 import { usePrivateAxios } from "../../../../../common/hooks/usePrivateAxios";
 import { iUser } from "../../../../../common/model";
@@ -15,39 +15,49 @@ type Props = {
     email: string;
   };
   set_is_display: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentRoom: React.Dispatch<React.SetStateAction<iRoom | undefined>>;
-  mutate: UseMutateFunction<
-    AxiosResponse<any, any>,
-    unknown,
-    number | undefined,
-    unknown
-  >;
 };
 
 const SearchResult: React.FC<Props> = ({
-  data,
+  data: { first_name, last_name, user_id },
   set_is_display,
-  setCurrentRoom,
-  mutate,
 }) => {
   const queryClient = useQueryClient();
   const api = usePrivateAxios(queryClient);
   const user = queryClient.getQueryData<iUser>(["user"]);
+  const { setCurrentRoom } = useRoomContext();
+
+  const onSuccess = (data: any) => {
+    queryClient.setQueryData(["inbox_list"], (oldData: any) => {
+      const isInclude = oldData.some((item: any) => {
+        return item.conversation_id == data.conversation_id;
+      });
+      setCurrentRoom({
+        ...data,
+        first_name,
+        last_name,
+      });
+
+      if (isInclude) {
+        return oldData;
+      } else {
+        return [...oldData, { ...data, first_name, last_name }];
+      }
+    });
+  };
 
   const { mutate: create_room, data: room_data } = chatRoom.createRoom(
     queryClient,
-    api
+    api,
+    onSuccess
   );
 
   const handleClick = () => {
     const new_room = {
-      receiver_id: data.user_id,
-      contact_name: `${data.first_name} ${data.last_name}`,
-      user_id: user?.user_id,
+      receiver_id: user_id,
+      sender_id: user?.user_id,
     };
     create_room(new_room);
-    setCurrentRoom(room_data);
-    mutate(room_data?.room_id);
+
     set_is_display(false);
   };
   return (
@@ -62,7 +72,7 @@ const SearchResult: React.FC<Props> = ({
       </div>
       <div className="flex w-full justify-between">
         <div className="flex flex-col gap-1">
-          <p className="font-semibold">{`${data.first_name} ${data.last_name}`}</p>
+          <p className="font-semibold">{`${first_name} ${last_name}`}</p>
         </div>
       </div>
     </div>

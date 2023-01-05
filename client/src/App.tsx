@@ -6,13 +6,6 @@ import Register from "./pages/Register";
 import PrivateRoutes from "./middleware/PrivateRoutes";
 import PersistLogin from "./middleware/PersistLogin";
 import CheckAccess from "./middleware/CheckAccess";
-import {
-  privateAxios,
-  onRequest,
-  onRequestError,
-} from "./lib/custom-axios/privateAxios";
-
-privateAxios.interceptors.request.use(onRequest, onRequestError);
 
 const App: React.FC = () => {
   return (

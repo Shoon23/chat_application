@@ -5,6 +5,7 @@ import { AxiosError, AxiosResponse } from "axios";
 import { iLoginForm } from "../pages/Login/model";
 import { iPostData } from "../pages/Register/model";
 import { iError } from "../common/model";
+import { queryClient } from "../main";
 export default {
   login: (queryClient: QueryClient) => {
     const navigate = useNavigate();
@@ -42,6 +43,20 @@ export default {
         queryClient.setQueryData(["user"], data?.data);
         navigate(from, { replace: true });
         return data;
+      },
+    });
+  },
+  logout: (queryClient: QueryClient) => {
+    const navigate = useNavigate();
+
+    return useMutation({
+      mutationFn: async () => {
+        return await authAxios.get("/auth/logout");
+      },
+      onSuccess(data, variables, context) {
+        console.log(data.data);
+        queryClient.clear();
+        navigate("auth/login");
       },
     });
   },

@@ -10,60 +10,48 @@ import { iMessageList } from "./model";
 import message from "../../../../services/message";
 import { useQueryClient } from "@tanstack/react-query";
 import { usePrivateAxios } from "../../../../common/hooks/usePrivateAxios";
+import { useRoomContext } from "../../../../common/hooks/useRoomContext";
 
 type Props = {
-  currentRoom: iRoom | undefined;
   socket: React.MutableRefObject<Socket | undefined>;
+  messages: Array<iMessageList>;
+  messageFetching: boolean;
 };
 
-const MessageArea: React.FC<Props> = ({ currentRoom, socket }) => {
+const MessageArea: React.FC<Props> = ({
+  socket,
+  messages,
+  messageFetching,
+}) => {
   const queryClient = useQueryClient();
   const api = usePrivateAxios(queryClient);
   const user = queryClient.getQueryData<iUser>(["user"]);
-  const messages = queryClient.getQueryData<Array<iMessageList>>([
-    "message_list",
-  ]);
   const { mutate } = message.sendMessage(queryClient, api);
   const [newMessage, setNewMessage] = useState<string>("");
+  const { currentRoom } = useRoomContext();
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    socket.current?.on("getMessage", (data) => {
-      queryClient.setQueryData(["message_list"], (oldData: any) => {
-        return [
-          ...oldData,
-          {
-            sender_id: data.receiverId,
-            message_body: data.message,
-            date_sent: Date.now(),
-          },
-        ];
-      });
-    });
-    bottomRef.current?.scrollIntoView({});
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
   const handleSend = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!newMessage) {
+      return;
+    }
     const message = {
-      room_id: currentRoom?.room_id,
+      conversation: currentRoom?.conversation_id,
       sender_id: user?.user_id,
       message_body: newMessage,
     };
     mutate(message);
-    let receiverId;
-    if (currentRoom?.user_one !== user?.user_id) {
-      receiverId = currentRoom?.user_one;
-    } else {
-      receiverId = currentRoom?.user_two;
-    }
-
     socket.current?.emit("sendMessage", {
+      conversation: currentRoom?.conversation_id,
       senderId: user?.user_id,
-      receiverId,
+      receiverId: currentRoom?.receiver_id,
       message: newMessage,
     });
-
     setNewMessage("");
   };
 
@@ -71,22 +59,19 @@ const MessageArea: React.FC<Props> = ({ currentRoom, socket }) => {
     <div className="flex flex-col w-2/3 border-r border-slate-700">
       {currentRoom ? (
         <>
-          <ChatHeader />
+          <ChatHeader currentRoom={currentRoom} />
           <div className="h-screen overflow-y-scroll">
             <div className="flex flex-col">
-              {messages?.map((mess) => {
-                if (mess.sender_id === user?.user_id) {
-                  return (
-                    <SendBox key={mess.date_sent} message={mess.message_body} />
-                  );
-                }
-                return (
-                  <ReceiveBox
-                    key={mess.date_sent}
-                    message={mess.message_body}
-                  />
-                );
-              })}
+              {messageFetching ? (
+                <div className="">fetching...</div>
+              ) : (
+                messages?.map((mess, i) => {
+                  if (mess.sender_id === user?.user_id) {
+                    return <SendBox key={i} message={mess.message_body} />;
+                  }
+                  return <ReceiveBox key={i} message={mess.message_body} />;
+                })
+              )}
               <div ref={bottomRef}></div>
             </div>
           </div>

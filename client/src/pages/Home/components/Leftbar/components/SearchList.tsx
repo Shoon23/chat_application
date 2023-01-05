@@ -13,21 +13,12 @@ type Props = {
     email: string;
   }>;
   set_is_display: React.Dispatch<React.SetStateAction<boolean>>;
-  setCurrentRoom: React.Dispatch<React.SetStateAction<iRoom | undefined>>;
-  mutate: UseMutateFunction<
-    AxiosResponse<any, any>,
-    unknown,
-    number | undefined,
-    unknown
-  >;
 };
 
 const SearchList: React.FC<Props> = ({
   isLoading,
   search_list,
   set_is_display,
-  setCurrentRoom,
-  mutate,
 }) => {
   if (isLoading) {
     return <div className="">loading</div>;
@@ -42,8 +33,6 @@ const SearchList: React.FC<Props> = ({
                 key={search_data.user_id}
                 data={search_data}
                 set_is_display={set_is_display}
-                setCurrentRoom={setCurrentRoom}
-                mutate={mutate}
               />
             );
           })

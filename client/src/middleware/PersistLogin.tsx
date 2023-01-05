@@ -15,6 +15,8 @@ const PersistLogin: React.FC<Props> = ({}) => {
 
   const { isLoading, isError } = useQuery(["user"], useRefreshToken, {
     enabled: isExist,
+    refetchOnMount: false,
+    retry: false,
   });
   if (isError) {
     navigate("/auth/login");

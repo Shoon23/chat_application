@@ -34,22 +34,28 @@ const findUser = (receiverId) => {
 io.on("connection", (socket) => {
   socket.on("addUser", (userId) => {
     console.log("a user connected");
+    console.log(activeUsers);
 
     addActiveUser(userId, socket.id);
     io.emit("getUsers", activeUsers);
   });
 
-  socket.on("sendMessage", ({ senderId, receiverId, message }) => {
-    const data = findUser(receiverId);
-    console.log(data);
-    console.log(activeUsers);
-    if (data?.socketId) {
-      io.to(data?.socketId).emit("getMessage", {
-        receiverId,
-        message,
-      });
+  socket.on(
+    "sendMessage",
+    ({ senderId, receiverId, message, conversation }) => {
+      const data = findUser(receiverId);
+      console.log(data);
+      console.log(senderId);
+      if (data?.socketId) {
+        io.to(data?.socketId).emit("getMessage", {
+          conversation,
+          senderId,
+          receiverId,
+          message,
+        });
+      }
     }
-  });
+  );
 
   socket.on("disconnect", () => {
     console.log("a user disconnected");

@@ -1,10 +1,17 @@
-export interface iRoom {
-  room_id: number;
-  user_one: number | undefined;
-  user_two: number | undefined;
-}
 export interface iNewRoom {
-  user_id: number | undefined;
+  sender_id: number | undefined;
   receiver_id: number;
-  contact_name: string;
+}
+
+export interface iRoom {
+  receiver_id: number;
+  conversation_id: number;
+  first_name: string;
+  last_name: string;
+  sender_id: number;
+}
+
+export interface iOnlineUser {
+  userId: number;
+  socketId: string;
 }
