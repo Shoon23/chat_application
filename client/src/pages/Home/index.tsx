@@ -5,12 +5,11 @@ import users from "../../services/users";
 import MessageArea from "./components/MessageArea";
 import Rightbar from "./components/Rightbar";
 import { iUser } from "../../common/model";
-import { iRoom, iOnlineUser } from "./model";
+import { iOnlineUser } from "./model";
 import { useQueryClient } from "@tanstack/react-query";
 import { io, Socket } from "socket.io-client";
 import message from "../../services/message";
 import { usePrivateAxios } from "../../common/hooks/usePrivateAxios";
-import { iMessageList } from "./components/MessageArea/model";
 import { useRoomContext } from "../../common/hooks/useRoomContext";
 type Props = {};
 

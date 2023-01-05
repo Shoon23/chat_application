@@ -1,19 +1,15 @@
 import express, { Express } from "express";
-import { Server } from "socket.io";
-import { createServer } from "http";
 import cors from "cors";
-// import dotenv from "dotenv";
+import dotenv from "dotenv";
 import cookieParser from "cookie-parser";
 import auth_routes from "./routes/Auth";
 import message_routes from "./routes/Message";
 import room_routes from "./routes/Room";
 import { verifyToken } from "./middleware/verifyToken";
 
-// dotenv.config();
-
+dotenv.config();
 const app: Express = express();
-
-const port = 3000;
+const port = process.env.PORT;
 
 app.use(cookieParser());
 app.use(express.json());
